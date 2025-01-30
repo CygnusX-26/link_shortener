@@ -5,6 +5,7 @@ from os import getenv
 import re
 from utils import gen_path, test_valid
 from db import add_url, get_url, check_path, init_db
+from models import db
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
@@ -53,7 +54,5 @@ def verify(username, password):
     except KeyError:
         return None
 
-
-if __name__ == '__main__':
-    init_db(app)
-    app.run('0.0.0.0', debug=False, load_dotenv=True)
+db.init_app(app)
+init_db(app)
