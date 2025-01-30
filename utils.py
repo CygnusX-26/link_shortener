@@ -2,6 +2,7 @@ from models import Link
 from string import ascii_letters
 from random import randint
 from requests import get, exceptions
+from typing import Any
 
 
 
@@ -24,4 +25,7 @@ def test_valid(url: str) -> bool:
         return get(url, allow_redirects=True).status_code != 404
     except exceptions.ConnectionError:
         return False
+    
+def statusify(data: Any, success: bool) -> dict:
+    return {"success": success, "data": data}
         

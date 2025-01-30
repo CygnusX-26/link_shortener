@@ -7,8 +7,6 @@ RUN useradd -r flask-user
 WORKDIR /home/flask-user/app
 COPY . /home/flask-user/app
 
-RUN mkdir /home/flask-user/app/instance && sudo chown -R flask-user:flask-user /home/flask-user/app/instance
-
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 5000

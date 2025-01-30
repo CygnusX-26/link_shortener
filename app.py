@@ -3,8 +3,8 @@ from flask_httpauth import HTTPBasicAuth
 from dotenv import load_dotenv
 from os import getenv
 import re
-from utils import gen_path, test_valid
-from db import add_url, get_url, check_path, init_db
+from utils import gen_path, test_valid, statusify
+from db import add_url, get_url, check_path, init_db, get_all_and_jsonify, delete_path
 from models import db
 
 app = Flask(__name__)
@@ -37,15 +37,30 @@ def link(path_name):
 def create():
     url = request.args.get('url', None)
     if url == None or re.match(r"https?:\/\/[^\s/$.?#].[^\s]*", url) == None or len(url) > 499 or not test_valid(url):
-        return "Invalid Url"
+        return statusify("Invalid Url", False)
     
     possible = check_path(url)
     if possible is not None:
-        return gen_url(possible.path)
+        return statusify(gen_url(possible.path), True)
 
     path = gen_path()
     add_url(url, path)
-    return gen_url(path)
+    return statusify(gen_url(path), True)
+
+@app.route("/all")
+@auth.login_required
+def all():
+    return statusify(get_all_and_jsonify(), True)
+
+@app.route("/delete")
+@auth.login_required
+def delete():
+    path = request.args.get('path', None)
+    if path == None:
+        return statusify("Invalid or nonexistent path", False)
+    return statusify(delete_path(path), True)
+    
+
 
 @auth.verify_password
 def verify(username, password):
