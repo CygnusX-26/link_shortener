@@ -1,0 +1,9 @@
+services:
+  flask-app:
+    build: .
+    ports:
+      - "6667:5000"
+    environment:
+      - FLASK_APP=app.py
+    user: flask
+    restart: unless-stopped

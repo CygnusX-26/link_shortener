@@ -1,11 +1,10 @@
 from flask import Flask, redirect, request
 from flask_httpauth import HTTPBasicAuth
-from models import db, Link
 from dotenv import load_dotenv
 from os import getenv
 import re
 from utils import gen_path, test_valid
-from db import add_url, get_url, check_path
+from db import add_url, get_url, check_path, init_db
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
@@ -20,11 +19,6 @@ load_dotenv()
 USER = {
     "admin": getenv("ADMIN_AUTH")
 }
-
-def init_db():
-    db.init_app(app)
-    with app.app_context():
-        db.create_all()
 
 @app.route("/")
 def home():
@@ -61,5 +55,5 @@ def verify(username, password):
 
 
 if __name__ == '__main__':
-    init_db()
-    app.run('0.0.0.0', 5000, debug=False, load_dotenv=True)
+    init_db(app)
+    app.run('0.0.0.0', debug=False, load_dotenv=True)

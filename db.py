@@ -1,5 +1,10 @@
 from models import db, Link
 
+def init_db(app):
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
+
 def add_url(url:str, path:str) -> None:
     link = Link(url=url, path=path)
     db.session.add(link)
