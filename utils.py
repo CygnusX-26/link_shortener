@@ -9,7 +9,7 @@ from typing import Any
 def gen_path() -> str:
     paths = Link.query.all()
     path = __gen_chars()
-    while path in paths:
+    while path in paths or path == "all":
         path = __gen_chars()
     return path
 
