@@ -17,10 +17,6 @@ gen_url = lambda path: f'{URL}{path}'
 
 load_dotenv()
 
-USER = {
-    getenv("NAME"): getenv("AUTH_TOKEN")
-}
-
 @app.route("/")
 def home():
     return redirect(HOME_URL)
@@ -65,7 +61,7 @@ def delete():
 @auth.verify_password
 def verify(username, password):
     try:
-        return username if USER[username] and check_password(password, getenv("AUTH_TOKEN").encode()) else None
+        return username if username == getenv("NAME") and check_password(password, getenv("AUTH_TOKEN").encode()) else None
     except KeyError:
         return None
 
