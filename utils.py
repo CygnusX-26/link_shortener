@@ -3,6 +3,7 @@ from string import ascii_letters
 from random import randint
 from requests import get, exceptions
 from typing import Any
+from bcrypt import checkpw
 
 
 
@@ -28,4 +29,7 @@ def test_valid(url: str) -> bool:
     
 def statusify(data: Any, success: bool) -> dict:
     return {"success": success, "data": data}
+
+def check_password(password: str, hashed_password: bytes) -> bool:
+    return checkpw(password.encode(), hashed_password)
         

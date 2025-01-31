@@ -3,7 +3,7 @@ from flask_httpauth import HTTPBasicAuth
 from dotenv import load_dotenv
 from os import getenv
 import re
-from utils import gen_path, test_valid, statusify
+from utils import gen_path, test_valid, statusify, check_password
 from db import add_url, get_url, check_path, init_db, get_all_and_jsonify, delete_path
 from models import db
 
@@ -65,7 +65,7 @@ def delete():
 @auth.verify_password
 def verify(username, password):
     try:
-        return username if USER[username] == password else None
+        return username if USER[username] and check_password(password, getenv("AUTH_TOKEN").encode()) else None
     except KeyError:
         return None
 
