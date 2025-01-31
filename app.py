@@ -18,7 +18,7 @@ gen_url = lambda path: f'{URL}{path}'
 load_dotenv()
 
 USER = {
-    "admin": getenv("ADMIN_AUTH")
+    getenv("NAME"): getenv("AUTH_TOKEN")
 }
 
 @app.route("/")
