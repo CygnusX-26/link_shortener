@@ -16,7 +16,7 @@ def gen_path() -> str:
 def __gen_chars() -> str:
     r = ""
     values = ascii_letters + "0123456789_"
-    for _ in range(6):
+    for _ in range(3):
         r += values[randint(0, len(values) - 1)]
     return r
 
